@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Finanças - Liquid Glass</title>
+    
+    <!-- FAVICON (Ícone da Aba) -->
+    <link rel="icon" type="image/png" href="logo.png?v=1">
+    <link rel="shortcut icon" type="image/png" href="logo.png?v=1">
+    <link rel="apple-touch-icon" href="logo.png?v=1">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Biblioteca EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+<body>
+
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
+
+    <div class="main-wrapper">
+        <!-- TELA DE AUTENTICAÇÃO (LOGIN / REGISTRO) -->
+        <div id="auth-container" class="glass-card auth-card">
+            <div class="auth-header">
+                <img src="logo.png" alt="Logo" class="site-logo auth-logo">
+                <h2 id="auth-title">Entrar na sua Conta</h2>
+            </div>
+            
+            <form id="auth-form">
+                <div class="input-group" id="group-nome" style="display: none;">
+                    <input type="text" id="auth-nome" placeholder="Seu Nome">
+                </div>
+
+                <div class="input-group">
+                    <input type="email" id="auth-email" placeholder="E-mail" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="password" id="auth-password" placeholder="Senha (mínimo 6 caracteres)" required>
+                </div>
+
+                <div class="input-group" id="group-confirm-password" style="display: none;">
+                    <input type="password" id="auth-confirm-password" placeholder="Confirme sua Senha">
+                </div>
+
+                <button type="submit" id="auth-btn">Entrar</button>
+            </form>
+
+            <p class="auth-switch">
+                <span id="auth-switch-text">Não tem uma conta?</span>
+                <a href="#" id="auth-switch-btn">Cadastrar-se</a>
+            </p>
+        </div>
+
+        <!-- TELA DE DIGITAÇÃO DO TOKEN DE 6 DÍGITOS -->
+        <div id="verify-container" class="glass-card auth-card" style="display: none;">
+            <div class="auth-header">
+                <img src="logo.png" alt="Logo" class="site-logo auth-logo">
+                <h2>Código de Verificação</h2>
+            </div>
+            <p style="color: #a78bfa; margin-bottom: 20px; line-height: 1.5; font-size: 0.9rem;">
+                Enviamos um código de 6 dígitos para o seu e-mail.<br>
+                Digite-o abaixo para confirmar sua conta:
+            </p>
+
+            <div class="otp-container">
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric">
+            </div>
+
+            <button id="btn-verify-otp" class="btn-glass btn-green">Confirmar Código</button>
+            <button id="btn-resend-otp" class="btn-glass btn-purple">Reenviar Código por E-mail</button>
+            <button id="btn-cancel-verify" class="btn-delete" style="width: 100%; margin-top: 5px;">Sair / Usar outra conta</button>
+        </div>
+
+        <!-- PAINEL PRINCIPAL (SÓ EXIBIDO APÓS VERIFICADO) -->
+        <div id="app-container" style="display: none;">
+            <header class="glass-card header-card">
+                <div class="logo-container">
+                    <img src="logo.png" alt="Logo Minhas Finanças" class="site-logo">
+                    <h1>Minhas Finanças</h1>
+                </div>
+                <div class="user-info">
+                    <span id="user-email"></span>
+                    <button id="btn-logout" class="btn-delete">Sair</button>
+                </div>
+            </header>
+
+            <main class="container">
+                <section class="cards">
+                    <div class="card glass-card">
+                        <h3>Entradas</h3>
+                        <p class="valor entrada" id="total-entradas">R$ 0,00</p>
+                    </div>
+
+                    <div class="card glass-card">
+                        <h3>Saídas</h3>
+                        <p class="valor saida" id="total-saidas">R$ 0,00</p>
+                    </div>
+
+                    <div class="card glass-card highlight">
+                        <h3>Saldo Total</h3>
+                        <p class="valor total" id="saldo-total">R$ 0,00</p>
+                    </div>
+                </section>
+
+                <section class="form-container glass-card">
+                    <h2>Adicionar Transação</h2>
+                    <form id="finance-form">
+                        <div class="input-group">
+                            <input type="text" id="descricao" placeholder="Descrição" required>
+                        </div>
+                        
+                        <div class="input-group">
+                            <input type="number" id="valor" step="0.01" placeholder="Valor (R$)" required>
+                        </div>
+
+                        <div class="input-group">
+                            <select id="tipo" required>
+                                <option value="entrada">Entrada</option>
+                                <option value="saida">Saída</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <input type="text" id="categoria" placeholder="Categoria" required>
+                        </div>
+
+                        <div class="input-group">
+                            <input type="date" id="data" required>
+                        </div>
+
+                        <button type="submit">Adicionar</button>
+                    </form>
+                </section>
+
+                <section class="transacoes glass-card">
+                    <h2>Últimas Transações</h2>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th>Valor</th>
+                                    <th>Categoria</th>
+                                    <th>Data</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-corpo">
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
