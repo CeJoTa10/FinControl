@@ -1,40 +1,40 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { 
-    getAuth, 
-    createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword, 
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
     updateProfile,
-    signOut, 
-    onAuthStateChanged 
+    signOut,
+    onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { 
-    getFirestore, 
-    collection, 
-    addDoc, 
-    deleteDoc, 
-    doc, 
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    deleteDoc,
+    doc,
     setDoc,
     getDoc,
-    onSnapshot, 
-    query, 
-    orderBy 
+    onSnapshot,
+    query,
+    orderBy
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // SUAS CREDENCIAIS FIREBASE
 const firebaseConfig = {
-  apiKey: "AIzaSyAfsYMKNugfKqv0M79vOOWSZrletcuUx14",
-  authDomain: "fincontrol-abd2d.firebaseapp.com",
-  projectId: "fincontrol-abd2d",
-  storageBucket: "fincontrol-abd2d.firebasestorage.app",
-  messagingSenderId: "353204332613",
-  appId: "1:353204332613:web:35b791c06a45e8fca95b2c",
-  measurementId: "G-F6C375TP8W"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // CREDENCIAIS EMAILJS
-const EMAILJS_PUBLIC_KEY = "_BUHlwlm3Vk99YvVr";
-const EMAILJS_SERVICE_ID = "service_97z5kgl";
-const EMAILJS_TEMPLATE_ID = "template_yv9okrh";
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
 
 emailjs.init(EMAILJS_PUBLIC_KEY);
 
@@ -91,13 +91,13 @@ otpInputs.forEach((input, index) => {
 authSwitchBtn.addEventListener('click', (e) => {
     e.preventDefault();
     isSignUpMode = !isSignUpMode;
-    
+
     if (isSignUpMode) {
         authTitle.innerText = "Criar uma Conta";
         authBtn.innerText = "Cadastrar";
         authSwitchText.innerText = "Já tem uma conta?";
         authSwitchBtn.innerText = "Entrar";
-        
+
         groupNome.style.display = "block";
         groupConfirmPassword.style.display = "block";
         document.getElementById('auth-nome').required = true;
@@ -107,7 +107,7 @@ authSwitchBtn.addEventListener('click', (e) => {
         authBtn.innerText = "Entrar";
         authSwitchText.innerText = "Não tem uma conta?";
         authSwitchBtn.innerText = "Cadastrar-se";
-        
+
         groupNome.style.display = "none";
         groupConfirmPassword.style.display = "none";
         document.getElementById('auth-nome').required = false;
@@ -154,7 +154,7 @@ authForm.addEventListener('submit', async (e) => {
 
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             await updateProfile(userCredential.user, { displayName: nome });
-            
+
             await gerarEEnviarOtp(userCredential.user);
             alert("Código de 6 dígitos enviado para o seu e-mail!");
         } else {
@@ -241,11 +241,11 @@ onAuthStateChanged(auth, async (user) => {
         if (isVerified) {
             const nomeExibicao = user.displayName ? `Olá, ${user.displayName}` : user.email;
             userEmailSpan.innerText = nomeExibicao;
-            
+
             authContainer.style.display = 'none';
             verifyContainer.style.display = 'none';
             appContainer.style.display = 'block';
-            
+
             carregarTransacoesUsuario(user.uid);
         } else {
             authContainer.style.display = 'none';
@@ -263,7 +263,7 @@ onAuthStateChanged(auth, async (user) => {
 
 function carregarTransacoesUsuario(userId) {
     const q = query(
-        collection(db, "users", userId, "transacoes"), 
+        collection(db, "users", userId, "transacoes"),
         orderBy("data", "desc")
     );
 
@@ -305,7 +305,7 @@ financeForm.addEventListener('submit', async (e) => {
     }
 });
 
-window.removerTransacao = async function(id) {
+window.removerTransacao = async function (id) {
     if (!currentUser) return;
     try {
         await deleteDoc(doc(db, "users", currentUser.uid, "transacoes", id));
