@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <!-- Biblioteca para conversão de HTML em PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minhas Finanças - Liquid Glass</title>
     
-    <!-- FAVICON (Ícone da Aba) -->
+    <!-- FAVICON -->
     <link rel="icon" type="image/png" href="logo.png?v=1">
     <link rel="shortcut icon" type="image/png" href="logo.png?v=1">
     <link rel="apple-touch-icon" href="logo.png?v=1">
@@ -25,7 +27,7 @@
     <div class="bg-shape shape-3"></div>
 
     <div class="main-wrapper">
-        <!-- TELA DE AUTENTICAÇÃO (LOGIN / REGISTRO) -->
+        <!-- TELA DE AUTENTICAÇÃO -->
         <div id="auth-container" class="glass-card auth-card">
             <div class="auth-header">
                 <img src="logo.png" alt="Logo" class="site-logo auth-logo">
@@ -58,7 +60,7 @@
             </p>
         </div>
 
-        <!-- TELA DE DIGITAÇÃO DO TOKEN DE 6 DÍGITOS -->
+        <!-- TELA DE VERIFICAÇÃO OTP -->
         <div id="verify-container" class="glass-card auth-card" style="display: none;">
             <div class="auth-header">
                 <img src="logo.png" alt="Logo" class="site-logo auth-logo">
@@ -79,11 +81,11 @@
             </div>
 
             <button id="btn-verify-otp" class="btn-glass btn-green">Confirmar Código</button>
-            <button id="btn-resend-otp" class="btn-glass btn-purple">Reenviar Código por E-mail</button>
+            <button id="btn-resend-otp" class="btn-purple" style="width: 100%; margin-top: 10px; padding: 10px; border-radius: 8px; border: none; cursor: pointer;">Reenviar Código por E-mail</button>
             <button id="btn-cancel-verify" class="btn-delete" style="width: 100%; margin-top: 5px;">Sair / Usar outra conta</button>
         </div>
 
-        <!-- PAINEL PRINCIPAL (SÓ EXIBIDO APÓS VERIFICADO) -->
+        <!-- PAINEL PRINCIPAL -->
         <div id="app-container" style="display: none;">
             <header class="glass-card header-card">
                 <div class="logo-container">
@@ -97,6 +99,39 @@
             </header>
 
             <main class="container">
+                <!-- FILTRO MENSAL -->
+                <section class="glass-card" style="margin-bottom: 20px;">
+                    <div style="display: flex; gap: 15px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+                        <h2>Período das Finanças</h2>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="month" id="filtro-mes" class="btn-glass" style="color: #fff; background: rgba(255,255,255,0.1);">
+                            <button id="btn-gerar-relatorio" class="btn-glass btn-purple">📊 Ver Relatório do Mês</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PAINEL DE RELATÓRIO MENSAL -->
+<section id="painel-relatorio" class="glass-card" style="display: none; margin-bottom: 20px; border: 1px solid #a78bfa; background: #0f172a; padding: 20px; border-radius: 12px; color: #f8fafc;">
+    
+    <!-- Cabeçalho com as Ações do Painel -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid rgba(167, 139, 250, 0.2); padding-bottom: 10px;">
+        <h3 style="margin: 0; color: #a78bfa;">📊 Relatório por Descrição e Meio de Pagamento</h3>
+        
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <button id="btn-exportar-pdf" style="background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s;">
+                📄 Baixar Relatório em PDF
+            </button>
+            <button id="btn-fechar-relatorio" class="btn-delete" style="padding: 8px 16px; border-radius: 8px; cursor: pointer;">
+                Fechar
+            </button>
+        </div>
+    </div>
+
+    <!-- Área de Conteúdo (Renderizada Dinamicamente e Convertida para PDF) -->
+    <div id="conteudo-relatorio" style="line-height: 1.6; font-size: 0.95rem; color: #f8fafc;"></div>
+
+</section>
+                <!-- CARDS DE TOTALIZADORES -->
                 <section class="cards">
                     <div class="card glass-card">
                         <h3>Entradas</h3>
@@ -114,8 +149,26 @@
                     </div>
                 </section>
 
+                <!-- IMPORTAÇÃO DE EXTRATO (.OFX) -->
+                <section class="form-container glass-card" style="margin-bottom: 20px;">
+                    <h2>Importar Extrato Bancário (.OFX)</h2>
+                    <p style="color: #a78bfa; font-size: 0.85rem; margin-bottom: 15px;">
+                        Exporte o extrato do seu aplicativo bancário em formato .OFX e envie abaixo.
+                    </p>
+                    <div class="input-group">
+                        <input type="file" id="ofx-file-input" accept=".ofx" style="padding: 10px;">
+                    </div>
+
+                    <div id="import-preview" style="display: none; margin-top: 15px;">
+                        <h3 style="font-size: 1rem; color: #fff; margin-bottom: 10px;">Conferir Transações:</h3>
+                        <div id="preview-list" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1); padding: 10px; border-radius: 8px;"></div>
+                        <button id="btn-confirm-import" class="btn-glass btn-green" style="width: 100%;">Salvar Transações Selecionadas</button>
+                    </div>
+                </section>
+
+                <!-- FORMULÁRIO -->
                 <section class="form-container glass-card">
-                    <h2>Adicionar Transação</h2>
+                    <h2>Adicionar Transação Manualmente</h2>
                     <form id="finance-form">
                         <div class="input-group">
                             <input type="text" id="descricao" placeholder="Descrição" required>
@@ -127,13 +180,34 @@
 
                         <div class="input-group">
                             <select id="tipo" required>
-                                <option value="entrada">Entrada</option>
                                 <option value="saida">Saída</option>
+                                <option value="entrada">Entrada</option>
                             </select>
                         </div>
 
                         <div class="input-group">
-                            <input type="text" id="categoria" placeholder="Categoria" required>
+                            <select id="metodo-pagamento" required>
+                                <option value="Cartão de Crédito">Cartão de Crédito</option>
+                                <option value="Cartão de Débito">Cartão de Débito</option>
+                                <option value="Pix">Pix</option>
+                                <option value="Boleto">Boleto</option>
+                                <option value="Dinheiro">Dinheiro</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <select id="status-pagamento" required>
+                                <option value="Pago">Pago / Concluído</option>
+                                <option value="Pendente">Pendente / A Vencer</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <input type="text" id="parcelas" placeholder="Parcelas (Ex: 12x ou À vista)" value="À vista">
+                        </div>
+
+                        <div class="input-group">
+                            <input type="text" id="categoria" placeholder="Categoria (Ex: Mercado, Alimentação)" required>
                         </div>
 
                         <div class="input-group">
@@ -144,6 +218,7 @@
                     </form>
                 </section>
 
+                <!-- TABELA -->
                 <section class="transacoes glass-card">
                     <h2>Últimas Transações</h2>
                     <div class="table-responsive">
@@ -152,9 +227,12 @@
                                 <tr>
                                     <th>Descrição</th>
                                     <th>Valor</th>
+                                    <th>Método</th>
+                                    <th>Status</th>
+                                    <th>Parcela</th>
                                     <th>Categoria</th>
                                     <th>Data</th>
-                                    <th>Ação</th>
+                                    <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody id="tabela-corpo">
@@ -166,6 +244,6 @@
         </div>
     </div>
 
-    <script type="module" src="script.js"></script>
+    <script type="module" src="src/script.js"></script>
 </body>
 </html>

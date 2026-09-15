@@ -22,5 +22,8 @@
   "homepage": "https://github.com/CeJoTa10/FinControl#readme",
   "devDependencies": {
     "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "ofx-js": "^1.1.1"
   }
 }

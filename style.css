@@ -51,8 +51,13 @@ body {
 }
 
 @keyframes float {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(40px, 30px) scale(1.12); }
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(40px, 30px) scale(1.12);
+    }
 }
 
 /* Estilo Glassmorphism */
@@ -93,7 +98,8 @@ input::placeholder {
     color: #7e7193;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
     border-color: #a855f7;
     background: rgba(30, 15, 52, 0.8);
     box-shadow: 0 0 12px rgba(168, 85, 247, 0.35);
@@ -259,16 +265,26 @@ input:focus, select:focus {
     font-weight: 700;
 }
 
-.entrada { color: #34d399; }
-.saida { color: #f87171; }
-.total { color: #c084fc; }
+.entrada {
+    color: #34d399;
+}
+
+.saida {
+    color: #f87171;
+}
+
+.total {
+    color: #c084fc;
+}
 
 /* Formulário Finanças */
-.form-container, .transacoes {
+.form-container,
+.transacoes {
     padding: 25px;
 }
 
-.form-container h2, .transacoes h2 {
+.form-container h2,
+.transacoes h2 {
     font-size: 1.2rem;
     margin-bottom: 20px;
     color: #f3f0ff;
@@ -320,7 +336,8 @@ table {
     text-align: left;
 }
 
-th, td {
+th,
+td {
     padding: 14px;
     border-bottom: 1px solid rgba(168, 85, 247, 0.12);
 }
@@ -408,6 +425,7 @@ tr:last-child td {
         width: 100%;
     }
 }
+
 /* ==========================================
    INPUTS DE TOKEN (OTP) - LIQUID GLASS
    ========================================== */
@@ -437,6 +455,7 @@ tr:last-child td {
     box-shadow: 0 0 12px rgba(168, 85, 247, 0.5) !important;
     transform: scale(1.05);
 }
+
 /* BOTÕES GLASSMOPHISM */
 .btn-glass {
     width: 100%;
@@ -474,4 +493,28 @@ tr:last-child td {
     background: linear-gradient(135deg, #059669, #10b981);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(16, 185, 129, 0.55);
+}
+
+/* Aumento da largura do container principal */
+.main-wrapper {
+    width: 100%;
+    max-width: 1400px;
+    /* Aumentado de ~1000px para 1400px */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+}
+
+/* Garante que a tabela use 100% da largura expansiva */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
 }
