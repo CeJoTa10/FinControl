@@ -25,8 +25,6 @@ O **FinControl** foi desenvolvido para simplificar o acompanhamento de despesas 
 
 ## 🎨 Interface e Layout
 
-## 🎨 Interface e Layout
-
 | Visão Desktop | Visão Mobile |
 | :---: | :---: |
 | ![Visão Desktop](<Imagens/image copy.png>) | ![Visão Mobile](<Imagens/image copy 2.png>) |
