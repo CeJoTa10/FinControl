@@ -27,8 +27,8 @@ O **FinControl** foi desenvolvido para simplificar o acompanhamento de despesas 
 
 | Visão Desktop | Visão Mobile |
 | :---: | :---: |
-| ![Desktop](<img width="1919" height="855" alt="FinControl" src="https://github.com/user-attachments/assets/fc4c9598-4e0b-43f7-9ef7-837dd2f72e3c" />) 
-| ![Mobile](<img width="392" height="854" alt="FinControl Mobile" src="https://github.com/user-attachments/assets/0f106c73-f50a-458e-a894-fb0483945495" />) 
+| ![Desktop] ![alt text](<Imagens/image copy.png>)
+| ![Mobile] ![alt text](<Imagens/image copy 3.png>)
 
 ---
 
